@@ -1,0 +1,188 @@
+[gd_scene load_steps=17 format=3 uid="uid://bdk3tpqsgnfb0"]
+
+[ext_resource type="Texture2D" uid="uid://pucgh0qbmij" path="res://assets/Bg.png" id="1_4cr4k"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="2_noeq2"]
+[ext_resource type="FontFile" uid="uid://cwd1tkm36irny" path="res://assets/pixel_font.ttf" id="2_uujff"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="3_wiph6"]
+[ext_resource type="Script" path="res://scripts/cpu.gd" id="4_mt4bx"]
+[ext_resource type="Script" path="res://scripts/ball.gd" id="4_rvmj1"]
+[ext_resource type="AudioStream" uid="uid://cufi3oyi6mu8i" path="res://sounds/average_gigachad_music.mp3" id="7_q8vvv"]
+[ext_resource type="AudioStream" uid="uid://c2mh1l3xhui78" path="res://sounds/bonk.mp3" id="8_nwu8x"]
+[ext_resource type="AudioStream" uid="uid://c1aee04gm8ngd" path="res://sounds/wall_hit.mp3" id="9_mowrg"]
+[ext_resource type="AudioStream" uid="uid://3i3iqal66lnx" path="res://sounds/win.mp3" id="10_mum0e"]
+[ext_resource type="AudioStream" uid="uid://d0vdeot1k4yxr" path="res://sounds/wrong.mp3" id="11_5scc3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_agk0w"]
+size = Vector2(20, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wsd2g"]
+size = Vector2(10, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jmkep"]
+size = Vector2(1152, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vwae1"]
+size = Vector2(1152, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mgngf"]
+size = Vector2(27, 648)
+
+[node name="Main" type="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("1_4cr4k")
+centered = false
+script = ExtResource("2_noeq2")
+
+[node name="Player" type="StaticBody2D" parent="."]
+position = Vector2(50, 324)
+script = ExtResource("3_wiph6")
+
+[node name="ColorRect" type="ColorRect" parent="Player"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -60.0
+offset_right = 20.0
+offset_bottom = 60.0
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(10, 0)
+shape = SubResource("RectangleShape2D_agk0w")
+
+[node name="CPU" type="StaticBody2D" parent="."]
+position = Vector2(1082, 324)
+script = ExtResource("4_mt4bx")
+
+[node name="ColorRect" type="ColorRect" parent="CPU"]
+auto_translate_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -60.0
+offset_right = 20.0
+offset_bottom = 60.0
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CPU"]
+position = Vector2(10, 0)
+shape = SubResource("RectangleShape2D_agk0w")
+
+[node name="Ball" type="CharacterBody2D" parent="."]
+position = Vector2(576, 324)
+collision_mask = 3
+script = ExtResource("4_rvmj1")
+
+[node name="ColorRect" type="ColorRect" parent="Ball"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("RectangleShape2D_wsd2g")
+
+[node name="Borders" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="Top" type="CollisionShape2D" parent="Borders"]
+position = Vector2(576, -12)
+shape = SubResource("RectangleShape2D_jmkep")
+
+[node name="Bottom" type="CollisionShape2D" parent="Borders"]
+position = Vector2(576, 660)
+shape = SubResource("RectangleShape2D_vwae1")
+
+[node name="ScoreLeft" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreLeft"]
+position = Vector2(-14, 324)
+shape = SubResource("RectangleShape2D_mgngf")
+
+[node name="ScoreRight" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreRight"]
+position = Vector2(1165.5, 324)
+shape = SubResource("RectangleShape2D_mgngf")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="PlayerScore" type="Label" parent="HUD"]
+offset_left = 456.0
+offset_top = 20.0
+offset_right = 506.0
+offset_bottom = 70.0
+theme_override_fonts/font = ExtResource("2_uujff")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CPUScore" type="Label" parent="HUD"]
+auto_translate_mode = 1
+offset_left = 648.0
+offset_top = 20.0
+offset_right = 698.0
+offset_bottom = 70.0
+theme_override_fonts/font = ExtResource("2_uujff")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Controls" type="Label" parent="HUD"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -389.0
+offset_top = -76.0
+offset_right = -9.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/line_spacing = 10
+theme_override_fonts/font = ExtResource("2_uujff")
+theme_override_font_sizes/font_size = 15
+text = "/\\  - Para Cima
+\\/ - Para Baixo
+SHIFT - Mais Rápido"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="BallTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="GIGACHAD_MUSIC" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_q8vvv")
+volume_db = -18.819
+autoplay = true
+parameters/looping = true
+
+[node name="bonk" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_nwu8x")
+volume_db = -4.953
+
+[node name="wall_hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_mowrg")
+
+[node name="win" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_mum0e")
+
+[node name="wrong" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_5scc3")
+
+[connection signal="body_entered" from="ScoreLeft" to="." method="_on_score_left_body_entered"]
+[connection signal="body_entered" from="ScoreRight" to="." method="_on_score_right_body_entered"]
+[connection signal="timeout" from="BallTimer" to="." method="_on_ball_timer_timeout"]
